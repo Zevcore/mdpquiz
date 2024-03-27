@@ -1,0 +1,23 @@
+.wrapper {
+  width: 100%;
+  color: white;
+
+  .content {
+    width: 80vw;
+    text-align: center;
+    margin: 0 auto;
+    padding: 20px 0;
+
+    img {
+      margin-top: 30px;
+      max-width: 80vw;
+      //max-height: 40%;
+    }
+  }
+}
+
+body {
+  overflow: visible !important;;
+  background: rgb(43,43,43);
+  background: radial-gradient(circle, rgba(43,43,43,1) 0%, rgba(61,61,61,1) 100%);
+}

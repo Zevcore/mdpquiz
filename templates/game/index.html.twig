@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <canvas class="game" id="game"></canvas>
+    <div class="stats">
+        <p class="score">Punkty: <strong id="score">0</strong></p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('game') }}
+{% endblock %}

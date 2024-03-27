@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="content">
+            <div class="logos">
+                <img src="{{ asset("images/herb.png") }}" alt="">
+                <img src="{{ asset("images/zosp.png") }}" alt="">
+            </div>
+            <div class="text">
+                <p id="demo"></p>
+                <h1 id="h1"></h1>
+                <div class="buttons" style="display: none">
+                    <button class="yes_button">TAK</button>
+                    <button class="no_button">NIE</button>
+                </div>
+                <ul style="display: none">
+                    <li>Chcesz gasić pożary?</li>
+                    <li>Chcesz dowiedzieć się jak poprawnie wykonać RKO?</li>
+                    <li>Interesuje Cię survival?</li>
+                    <li>A dodatkowo chcesz się super bawić?</li>
+                </ul>
+
+                <div class="play" style="display: none">
+                    <h2>Zagrajmy w grę!</h2>
+                    <h3>Przed tobą zadanie:<br> musisz "przyłapać" 25 ognisk!</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('writer') }}
+{% endblock %}
