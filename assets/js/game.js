@@ -4,23 +4,30 @@ const scoreElem = document.getElementById("score");
 let gameRunning = true;
 
 const maxFlames = 30;
+const maxBombs = 5;
 const generationInterval = 500;
+const bombChance = 0.02;
 let lastGenerationTime = 0;
 
 const fire = new Image();
+const bomb = new Image();
 fire.src = "../images/fire.png";
+bomb.src = "../images/bomb.png";
 
 let score = 0;
 let flames = [];
+let bombs = [];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }
 
-window.addEventListener('load', resizeCanvas);
+window.addEventListener('load', () => {
+    resizeCanvas();
+    gameLoop();
+});
 window.addEventListener('resize', resizeCanvas);
-
 window.addEventListener('orientationchange', resizeCanvas);
 
 function generateRandomFire() {
@@ -34,6 +41,15 @@ function generateRandomFire() {
         flames.push({ x, y, size, speed });
         lastGenerationTime = currentTime;
     }
+
+    if (Math.random() < bombChance && bombs.length < maxBombs) {
+        const x = Math.random() * canvas.width;
+        const y = 0;
+        const size = 50;
+        const speed = Math.random() * 2 + 3;
+
+        bombs.push({ x, y, size, speed, image: bomb });
+    }
 }
 
 function drawFlames() {
@@ -45,6 +61,15 @@ function drawFlames() {
 
         if (flame.y > canvas.height) {
             flames.splice(index, 1);
+        }
+    });
+
+    bombs.forEach((bomb, index) => {
+        ctx.drawImage(bomb.image, bomb.x, bomb.y, bomb.size, bomb.size);
+        bomb.y += bomb.speed;
+
+        if (bomb.y > canvas.height) {
+            bombs.splice(index, 1);
         }
     });
 }
@@ -61,16 +86,28 @@ function updateScore() {
                 mouseY >= flame.y &&
                 mouseY <= flame.y + flame.size
             ) {
-                updateScoreBoard();
+                updateScoreBoard(1);
                 flames.splice(index, 1);
+            }
+        });
+
+        bombs.forEach((bomb, index) => {
+            if (
+                mouseX >= bomb.x &&
+                mouseX <= bomb.x + bomb.size &&
+                mouseY >= bomb.y &&
+                mouseY <= bomb.y + bomb.size
+            ) {
+                updateScoreBoard(-2);
+                bombs.splice(index, 1);
             }
         });
     });
 }
 
-function updateScoreBoard() {
-    score++;
-    if(score === 25) stopGame();
+function updateScoreBoard(points) {
+    score += points;
+    if (score === 25) stopGame();
     scoreElem.textContent = score.toString();
 }
 
@@ -88,7 +125,3 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop);
 }
-
-fire.onload = function() {
-    gameLoop();
-};
